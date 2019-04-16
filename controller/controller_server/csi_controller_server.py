@@ -27,7 +27,7 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
         path = os.path.join(my_path, "../../common/config.yaml")
 
         with open(path, 'r') as ymlfile:
-            self.cfg = yaml.load(ymlfile, Loader=yaml.FullLoader)
+            self.cfg = yaml.load(ymlfile)# TODO: add Loader=yaml.FullLoader for newer python versions
                 
     def CreateVolume(self, request, context):
         logger.debug("create volume")
@@ -109,6 +109,7 @@ class ControllerServicer(csi_pb2_grpc.ControllerServicer):
          
         if not name or not version:
             logger.error("plugin name or version cannot be empty")
+            
             context.set_code(grpc.StatusCode.INTERNAL)
             context.set_details("plugin name or version cannot be empty")
             return csi_pb2.GetPluginInfoResponse()
