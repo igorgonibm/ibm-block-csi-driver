@@ -47,7 +47,9 @@ pipeline {
             build job: 'CSI_XAVI_Staging_TLV_k8s1.13', parameters: [string(name: 'XAVILIB_BRANCH',
                                                                     value: 'develop'), string(name: 'XAVI_IMAGE',
                                                                                               value: 'production'),
-                                                                    string(name: 'CSI_IMAGE', value: image_url)]
+                                                                    string(name: 'CSI_IMAGE', value: image_url),
+                                                                    string(name: 'BASE_PARAMETERS_FILE',
+                                                                    value: 'CSI_XAVI_testing_default_k8s1.13')]
         }
 
         failure {
