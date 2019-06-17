@@ -37,10 +37,17 @@ pipeline {
             junit 'build/reports/*.xml'
             // cobertura coberturaReportFile: 'build/reports/*.xml'   ## TODO need to run cobertura but it has an issue "No such DSL method"
             archiveArtifacts 'build/reports/images_url'
-            sh '[ -d build/reports ] && rm -rf build/reports'
             script {
                 manager.addShortText("${env.GIT_BRANCH}")
             }
+            script{
+                image_url = readFile('build/reports/images_url')
+            }
+            sh '[ -d build/reports ] && rm -rf build/reports'
+            build job: 'CSI_XAVI_Staging_TLV_k8s1.13', parameters: [string(name: 'XAVILIB_BRANCH',
+                                                                    value: 'develop'), string(name: 'XAVI_IMAGE',
+                                                                                              value: 'production'),
+                                                                    string(name: 'CSI_IMAGE', value: image_url)]
         }
 
         failure {
